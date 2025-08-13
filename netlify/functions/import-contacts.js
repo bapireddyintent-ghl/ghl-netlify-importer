@@ -48,7 +48,7 @@ exports.handler = async function (event, context) {
         const sheets = google.sheets({ version: 'v4', auth });
 
         // --- 3. FIND THE SPREADSHEET AND READ DATA ---
-        const spreadsheetId = 'YOUR_SPREADSHEET_ID'; // <-- IMPORTANT: REPLACE THIS
+        const spreadsheetId = '1z-4C9DRTui1yeunkyCjxgiKIapoSt37aOkvWu53a2yc'; // <-- IMPORTANT: REPLACE THIS
         const searchResponse = await sheets.spreadsheets.get({ spreadsheetId });
 
         const sheet = searchResponse.data.sheets?.find(s => s.properties?.title === sheetName);
