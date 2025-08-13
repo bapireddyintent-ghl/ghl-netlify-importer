@@ -30,7 +30,7 @@ exports.handler = async function (event, context) {
         }
         const ghlApiKey = process.env.GHL_AGENCY_API_KEY;
         const googleClientEmail = process.env.GOOGLE_CLIENT_EMAIL;
-        const googlePrivateKey = process.env.GOOGLE_PRIVATE_KEY; // Netlify handles newlines automatically
+        const googlePrivateKey = Buffer.from(process.env.GOOGLE_PRIVATE_KEY, 'base64').toString('utf8'); // Netlify handles newlines automatically
 
         if (!ghlApiKey || !googleClientEmail || !googlePrivateKey) {
             console.error("Server configuration error: Missing environment variables.");
