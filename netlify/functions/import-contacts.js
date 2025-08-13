@@ -71,7 +71,7 @@ exports.handler = async function (event, context) {
         const sheets = google.sheets({ version: 'v4', auth });
 
         // --- 3. FIND THE SPREADSHEET AND READ DATA ---
-        const spreadsheetId = 'YOUR_SPREADSHEET_ID'; // <-- IMPORTANT: Make sure this is still correct!
+        const spreadsheetId = '1z-4C9DRTui1yeunkyCjxgiKIapoSt37aOkvWu53a2yc'; // <-- IMPORTANT: Make sure this is still correct!
         
         console.log(`Attempting to read sheet "${sheetName}" from spreadsheet ID "${spreadsheetId}"`);
 
