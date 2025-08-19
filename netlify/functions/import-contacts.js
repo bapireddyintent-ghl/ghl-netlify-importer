@@ -2,9 +2,6 @@
 const { google } = require('googleapis');
 const axios = require('axios');
 
-/**
- * Helper function to map spreadsheet row data to GHL contact fields.
- */
 function mapRowToContact(row, headers) {
     const contact = {};
     headers.forEach((header, index) => {
@@ -42,7 +39,7 @@ exports.handler = async function (event) {
             return { statusCode: 400, body: JSON.stringify({ message: 'Missing locationId or sheetName in request body.' }) };
         }
 
-        const ghlApiKey = process.env.GHL_API_KEY; // ✅ Use API key (not token)
+        const ghlApiKey = process.env.GHL_API_KEY;
         const googleClientEmail = process.env.GOOGLE_CLIENT_EMAIL;
         const googlePrivateKeyBase64 = process.env.GOOGLE_PRIVATE_KEY;
 
@@ -53,7 +50,6 @@ exports.handler = async function (event) {
 
         const googlePrivateKey = Buffer.from(googlePrivateKeyBase64, 'base64').toString('utf8');
 
-        // Google Sheets auth
         const auth = new google.auth.GoogleAuth({
             credentials: {
                 client_email: googleClientEmail,
@@ -94,17 +90,26 @@ exports.handler = async function (event) {
             contactData.locationId = locationId;
             contactData.source = `Google Sheet Import: ${sheetName}`;
 
+            // 🔍 Log exact payload being sent
+            console.log("Contact payload:", JSON.stringify(contactData, null, 2));
+
             try {
-                await axios.post('https://rest.gohighlevel.com/v2/contacts/', contactData, {
-                    headers: {
-                        'Authorization': `Api-Key ${ghlApiKey}`, // ✅ New auth method
-                        'Content-Type': 'application/json'
+                const response = await axios.post(
+                    'https://rest.gohighlevel.com/v2/contacts', // ✅ no trailing slash
+                    contactData,
+                    {
+                        headers: {
+                            'Authorization': `Api-Key ${ghlApiKey}`,
+                            'Content-Type': 'application/json'
+                        }
                     }
-                });
+                );
+
+                console.log("✅ GHL API response:", response.data);
                 successCount++;
             } catch (err) {
                 failureCount++;
-                console.error("Error importing contact:", err.response?.data || err.message);
+                console.error("❌ Error importing contact:", err.response?.data || err.message);
             }
         }
 
