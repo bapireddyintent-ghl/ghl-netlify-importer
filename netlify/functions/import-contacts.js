@@ -95,7 +95,7 @@ exports.handler = async function (event) {
 
             try {
                 const response = await axios.post(
-                    'https://rest.gohighlevel.com/v1/contacts', // ✅ no trailing slash
+                    'https://rest.gohighlevel.com/v2/contacts', // ✅ no trailing slash
                     contactData,
                     {
                         headers: {
